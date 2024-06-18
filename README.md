@@ -4,6 +4,7 @@ Re-usable github workflows for a typical pure-python project flow. These
 are only meant to work with a specific project layout and may not work for
 your project.
 
+
 ## Usage
 
 Example project layout:
@@ -23,7 +24,20 @@ Example project layout:
 ├── pyproject.toml
 ```
 
-Example github action workflow for running tests:
+### Running tests
+
+The following inputs are available for test workflows:
+
+| Name           | Description                           | Default       |
+|----------------|---------------------------------------|---------------|
+| use_poetry     | Use poetry for dependency management. | false         |
+| use_sphinx     | Use sphinx for documentation.         | false         |
+| use_black      | Use black for code formatting.        | false         |
+| python_version | Python version to use.                | 3.11          |
+| platform       | Platform to run the workflow on.      | ubuntu-latest |
+| black_path     | Path to run black on.                 | .             |
+
+And an example workflow:
 
 ```yaml
 name: Tests
@@ -45,10 +59,20 @@ jobs:
       python_version: ${{ matrix.python-version }}
 ```
 
-You can also use the release workflow, which will build and publish your
-package to pypi. Optionally, it'll also build and publish your documentation
-to github pages. Make sure you have a ``PYPI_TOKEN`` secret set up in your
-repository secrets:
+### Making Releases
+
+The following inputs are available for release workflows:
+
+| Name           | Description                                           | Default       |
+|----------------|-------------------------------------------------------|---------------|
+| use_poetry     | Use poetry for dependency management.                 | false         |
+| use_sphinx     | Use sphinx for documentation and push to github-pages | false         |
+| python_version | Python version to use.                                | 3.11          |
+| platform       | Platform to run the workflow on.                      | ubuntu-latest |
+
+Make sure you have a ``PYPI_TOKEN`` secret set up in your repository secrets,
+and run the job with the `pages: write` permission to push the documentation
+to github pages.
 
 ```yaml
 on:
