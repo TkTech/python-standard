@@ -4,15 +4,19 @@ on:
       use_poetry:
         required: false
         type: boolean
+        default: false
       use_black:
         required: false
         type: boolean
+        default: false
       use_sphinx:
         required: false
         type: boolean
+        default: false
       black_path:
         required: false
         type: string
+        default: "."
       python_version:
         required: false
         type: string
