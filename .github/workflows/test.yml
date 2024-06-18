@@ -65,9 +65,9 @@ jobs:
         if: ${{ inputs.use_black }} == 'true'
         run: |
           if [ "${{ inputs.use_poetry }}" = "true" ]; then
-            poetry run black ${{ inputs.black_path }}
+            poetry run black ${{ inputs.black_path }} --check
           else
-            black ${{ inputs.black_path }}
+            black ${{ inputs.black_path }} --check
           fi
 
       - name: Building documentation
