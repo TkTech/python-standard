@@ -23,10 +23,10 @@ jobs:
     if: ${{ inputs.use_cibuildwheel }} == 'false'
     runs-on: ${{ inputs.platform }}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4.1.7
 
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@5.1.0
         with:
           python-version: ${{ inputs.python_version }}
 
