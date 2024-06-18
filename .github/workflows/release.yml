@@ -55,14 +55,16 @@ jobs:
             cd docs && make clean html
           fi
 
+      - name: Packaging documentation
+        if: ${{ inputs.use_sphinx }} == 'true'
+        uses: actions/upload-pages-artifact@v2
+        with:
+          path: docs/_build/html
+
       - name: Publishing documentation
         if: ${{ inputs.use_sphinx }} == 'true'
-        run: |
-            if [ "${{ inputs.use_poetry }}" = "true" ]; then
-                poetry run ghp-import -f -n -p docs/_build/html
-            else
-                gh-pages -d docs/_build
-            fi
+        uses: actions/deploy-pages@v2
+        id: deployment
 
       - name: Push to PyPi
         run: |
