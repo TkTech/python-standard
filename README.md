@@ -42,8 +42,13 @@ And an example workflow:
 ```yaml
 name: Tests
 
-on: [push]
-
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
 jobs:
   test:
     name: Running tests.
