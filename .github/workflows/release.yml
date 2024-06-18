@@ -18,6 +18,7 @@ on:
     secrets:
       PYPI_TOKEN:
         required: true
+
 jobs:
   build:
     if: ${{ inputs.use_cibuildwheel }} == 'false'
@@ -97,7 +98,6 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: package
-          path: dist/
 
       - uses: actions/checkout@v4.1.7
 
