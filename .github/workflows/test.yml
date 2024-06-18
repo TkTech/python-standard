@@ -1,0 +1,84 @@
+on:
+  workflow_call:
+    inputs:
+      use_poetry:
+        required: false
+        type: boolean
+      use_black:
+        required: false
+        type: boolean
+      use_sphinx:
+        required: false
+        type: boolean
+      black_path:
+        required: false
+        type: string
+      python_version:
+        required: false
+        type: string
+        default: '3.11'
+      platform:
+        required: false
+        default: 'ubuntu-latest'
+        type: string
+jobs:
+  test:
+    runs-on: ${{ inputs.platform }}
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ inputs.python_version }}
+
+      - name: Install Poetry
+        if: ${{ inputs.use_poetry }} == 'true'
+        run: |
+          pip install poetry
+
+      - name: Install dependencies
+        run: |
+          if [ "${{ inputs.use_poetry }}" = "true" ]; then
+            poetry install --all-extras
+          else
+            pip install -r requirements.txt
+            if [ -f requirements-dev.txt ]; then
+              pip install -r requirements-dev.txt
+            fi
+          fi
+
+      - name: Building documentation
+        if: ${{ inputs.use_sphinx }} == 'true'
+        run: |
+          if [ "${{ inputs.use_poetry }}" = "true" ]; then
+            cd docs && poetry run make clean html
+          else
+            cd docs && make clean html
+          fi
+
+      - name: Run black
+        if: ${{ inputs.use_black }} == 'true'
+        run: |
+          if [ "${{ inputs.use_poetry }}" = "true" ]; then
+            poetry run black ${{ inputs.black_path }}
+          else
+            black ${{ inputs.black_path }}
+          fi
+
+      - name: Building documentation
+        if: ${{ inputs.use_sphinx }} == 'true'
+        run: |
+          if [ "${{ inputs.use_poetry }}" = "true" ]; then
+            poetry run sphinx-build -b html docs docs/_build
+          else
+            sphinx-build -b html docs docs/_build
+          fi
+
+      - name: Run tests
+        run: |
+          if [ "${{ inputs.use_poetry }}" = "true" ]; then
+            poetry run pytest
+          else
+            pytest
+          fi
