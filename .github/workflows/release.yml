@@ -94,17 +94,17 @@ jobs:
     runs-on: ubuntu-latest
     needs: [build]
     steps:
-      - name: Download package
-        uses: actions/download-artifact@v4
-        with:
-          name: package
-
       - uses: actions/checkout@v4.1.7
 
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: ${{ inputs.python_version }}
+
+      - name: Download package
+        uses: actions/download-artifact@v4
+        with:
+          name: package
 
       - name: Install Poetry
         if: ${{ inputs.use_poetry }} == 'true'
