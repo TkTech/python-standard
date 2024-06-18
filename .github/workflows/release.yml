@@ -30,12 +30,10 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: ${{ inputs.python_version }}
-
       - name: Install Poetry
         if: ${{ inputs.use_poetry }} == 'true'
         run: |
           pip install poetry
-
       - name: Install dependencies
         run: |
           if [ "${{ inputs.use_poetry }}" = "true" ]; then
@@ -46,7 +44,6 @@ jobs:
               pip install -r requirements-dev.txt
             fi
           fi
-
       - name: Building documentation
         if: ${{ inputs.use_sphinx }} == 'true'
         run: |
@@ -55,13 +52,11 @@ jobs:
           else
             cd docs && make clean html
           fi
-
       - name: Packaging documentation
         if: ${{ inputs.use_sphinx }} == 'true'
         uses: actions/upload-pages-artifact@v3.0.1
         with:
           path: docs/_build/html
-
       - name: Building package
         if: ${{ inputs.use_poetry }} == 'true'
         run: |
@@ -70,7 +65,6 @@ jobs:
           else
             python setup.py sdist bdist_wheel
           fi
-
       - name: Upload package
         if: ${{ inputs.use_poetry }} == 'true'
         uses: actions/upload-artifact@v4
@@ -99,7 +93,8 @@ jobs:
         with:
           name: package
           path: dist
-
+      # "Trusted Publishing" cannot yet be used from reusable workflows
+      # so tokens must be passed in as secrets.
       - name: Publish package
         uses: pypa/gh-action-pypi-publish@v1.9.0
         with:
