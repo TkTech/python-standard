@@ -13,6 +13,10 @@ on:
         required: false
         type: boolean
         default: false
+      use_pytest:
+        required: false
+        type: boolean
+        default: false
       black_path:
         required: false
         type: string
@@ -47,7 +51,7 @@ jobs:
           python-version: ${{ inputs.python_version }}
 
       - name: Install Poetry
-        if: ${{ inputs.use_poetry }} == 'true'
+        if: ${{ inputs.use_poetry }}
         run: |
           pip install poetry
 
@@ -62,17 +66,8 @@ jobs:
             fi
           fi
 
-      - name: Building documentation
-        if: ${{ inputs.use_sphinx }} == 'true'
-        run: |
-          if [ "${{ inputs.use_poetry }}" = "true" ]; then
-            cd docs && poetry run make clean html
-          else
-            cd docs && make clean html
-          fi
-
       - name: Run black
-        if: ${{ inputs.use_black }} == 'true'
+        if: ${{ inputs.use_black }}
         run: |
           if [ "${{ inputs.use_poetry }}" = "true" ]; then
             poetry run black ${{ inputs.black_path }} --check
@@ -81,7 +76,7 @@ jobs:
           fi
 
       - name: Building documentation
-        if: ${{ inputs.use_sphinx }} == 'true'
+        if: ${{ inputs.use_sphinx }}
         run: |
           if [ "${{ inputs.use_poetry }}" = "true" ]; then
             poetry run sphinx-build -b html docs docs/_build
@@ -90,6 +85,7 @@ jobs:
           fi
 
       - name: Run tests
+        if: ${{ inputs.use_pytest }}
         run: |
           if [ "${{ inputs.use_poetry }}" = "true" ]; then
             poetry run pytest
