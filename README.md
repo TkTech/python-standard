@@ -28,14 +28,16 @@ Example project layout:
 
 The following inputs are available for test workflows:
 
-| Name           | Description                           | Default       |
-|----------------|---------------------------------------|---------------|
-| use_poetry     | Use poetry for dependency management. | false         |
-| use_sphinx     | Use sphinx for documentation.         | false         |
-| use_black      | Use black for code formatting.        | false         |
-| python_version | Python version to use.                | 3.11          |
-| platform       | Platform to run the workflow on.      | ubuntu-latest |
-| black_path     | Path to run black on.                 | .             |
+| Name             | Description                           | Default              |
+|------------------|---------------------------------------|----------------------|
+| use_poetry       | Use poetry for dependency management. | false                |
+| use_sphinx       | Use sphinx for documentation.         | false                |
+| use_black        | Use black for code formatting.        | false                |
+| python_version   | Python version to use.                | 3.11                 |
+| platform         | Platform to run the workflow on.      | ubuntu-latest        |
+| black_path       | Path to run black on.                 | .                    |
+| requirements     | Path to the requirements file         | requirements.txt     |
+| requirements_dev | Path to the requirements dev file     | requirements_dev.txt |
 
 And an example workflow:
 

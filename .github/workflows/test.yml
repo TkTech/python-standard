@@ -25,6 +25,16 @@ on:
         required: false
         default: 'ubuntu-latest'
         type: string
+      requirements:
+        required: false
+        type: string
+        default: 'requirements.txt'
+        description: 'Path to the requirements file'
+      requirements_dev:
+        required: false
+        type: string
+        default: 'requirements-dev.txt'
+        description: 'Path to the requirements-dev file'
 jobs:
   test:
     runs-on: ${{ inputs.platform }}
@@ -46,9 +56,9 @@ jobs:
           if [ "${{ inputs.use_poetry }}" = "true" ]; then
             poetry install --all-extras
           else
-            pip install -r requirements.txt
-            if [ -f requirements-dev.txt ]; then
-              pip install -r requirements-dev.txt
+            pip install -r ${{ inputs.requirements }}
+            if [ -f ${{ inputs.requirements_dev }} ]; then
+              pip install -r ${{ inputs.requirements_dev }}
             fi
           fi
 
